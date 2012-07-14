@@ -1,10 +1,14 @@
 # for heroku
+heroku create <APP>
+
 heroku addons:add redistogo
 
 heroku config:set HIPCHAT_TOKEN=<token from hipchat>
 heroku config:set HIPCHAT_ROOM_ID=<room id in hipchat>
 heroku config:set DELICIOUS_USERNAME=<username for delicious>
 heroku config:set DELICIOUS_PASSWORD=<password for delicious>
+
+# git push heroku
 
 # after deploy
 heroku ps:scale worker=1
