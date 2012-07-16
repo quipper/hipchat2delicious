@@ -26,7 +26,7 @@ class Hipchat2Delicious
               page = Nokogiri::HTML(response.body)
               title = page.css("title").try(:first).try(:text) || url
               delicious.posts_add(:url => url, :title => title)
-              hipchat.rooms_message(ENV["HIPCHAT_ROOM_ID"], "delicious", "Saved: <a href=\"http://delicious.com/qshare\">delicious</a>", notify=0)
+              hipchat.rooms_message(ENV["HIPCHAT_ROOM_ID"], "delicious", "Saved: <a href=\"http://delicious.com/#{ENV["DELICIOUS_USERNAME"]}\">delicious</a>", notify=0)
 
               REDIS.set(url, true)
             end
