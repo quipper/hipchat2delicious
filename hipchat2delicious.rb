@@ -30,8 +30,9 @@ class Hipchat2Delicious
 
               REDIS.set(url, true)
             end
-          rescue URI::InvalidURIError => ex
-          rescue SocketError => ex
+          rescue URI::InvalidURIError
+          rescue SocketError
+          rescue Errno::ECONNREFUSED
           end
         end
       end
