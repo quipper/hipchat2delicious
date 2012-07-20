@@ -4,6 +4,8 @@ require 'www/delicious'
 require 'nokogiri'
 require 'tapp'
 require 'redis'
+require 'net/http'
+require 'net/https'
 
 URL_REGEX = /https?:\/\/[\S]+/
 uri = URI.parse(ENV["REDISTOGO_URL"] || "redis://localhost:6379")
@@ -21,8 +23,13 @@ class Hipchat2Delicious
           next if REDIS.get(url)
           begin
             p "url posted in hipchat: #{url}"
-            response = HTTParty.get(url)
-            if response.code == 200
+
+            uri = URI.parse(url)
+            http = Net::HTTP.new(uri.host, uri.port)
+            http.use_ssl = true if uri.scheme == "https"
+            response = http.request_get(uri.path)
+
+            if response.code == "200"
               page = Nokogiri::HTML(response.body)
               title = page.css("title").try(:first).try(:text) || url
               delicious.posts_add(:url => url, :title => title)
