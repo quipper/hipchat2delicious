@@ -38,6 +38,7 @@ class Hipchat2Delicious
               REDIS.set(url, true)
             end
           rescue URI::InvalidURIError
+          rescue ArgumentError # rescue "HTTP request path is empty" error
           rescue SocketError
           rescue Errno::ECONNREFUSED
           end
